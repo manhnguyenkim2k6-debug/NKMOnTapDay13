@@ -1,0 +1,71 @@
+﻿
+<!DOCTYPE HTML>
+<html>
+<head>
+	<title>Free Home Shoppe Website Template | Home :: w3layouts</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+	<link href="~/Content/css/style.css" rel="stylesheet" type="text/css" media="all" />
+</head>
+<body>
+	<!-- Begin Wrap -->
+	<div class="wrap">
+		<!-- Begin Header -->
+		@await Html.PartialAsync("NguyenKimManh_Header")
+	<!-- End Header -->
+	<!-- Begin Main -->
+	@RenderBody()
+	<!-- End Main -->
+</div>
+<!-- End Wrap -->
+<!-- Begin Footer -->
+@await Html.PartialAsync("NguyenKimManh_Footer")
+<!-- End Footer -->
+    <script>
+            document.addEventListener("DOMContentLoaded", function () {
+
+                const menuLoai = document.querySelectorAll(".loc-loai");
+
+                menuLoai.forEach(function (menu) {
+
+                    menu.addEventListener("click", function (event) {
+
+                        event.preventDefault();
+
+                        const maLoai = this.dataset.maloai;
+
+                        const url = '@Url.Action("LocTheoLoai", "Home")';
+
+                        fetch(url + "?maLoai=" + encodeURIComponent(maLoai))
+                            .then(function (response) {
+
+                                if (!response.ok) {
+                                    throw new Error("Không tải được hàng hóa");
+                                }
+
+                                return response.text();
+                            })
+                            .then(function (html) {
+
+                                document.getElementById("danhSachHangHoa")
+                                    .innerHTML = html;
+
+                            })
+                            .catch(function (error) {
+
+                                console.error(error);
+                                alert("Có lỗi khi lọc hàng hóa!");
+
+                            });
+
+                    });
+
+                });
+
+            });
+    </script>
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+
+</html>
+
